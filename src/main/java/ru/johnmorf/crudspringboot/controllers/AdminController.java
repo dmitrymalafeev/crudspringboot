@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.johnmorf.crudspringboot.entities.User;
 import ru.johnmorf.crudspringboot.repositories.UserRepository;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -20,34 +22,32 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String showAllUsers(Model model) {
+    public String showAllUsers(Principal principal, Model model) {
+        model.addAttribute("user", userRepository.findByEmail(principal.getName()));
         model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("userObj", new User());
         return "users";
     }
 
-    @GetMapping("/new")
-    public String addUser(@ModelAttribute("user") User user) {
-        return "newUser";
-    }
-
-    @PostMapping("/new")
-    public String createUser(@ModelAttribute("user")User user) {
+    @PostMapping("/save")
+    public String createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.refreshRoles();
         userRepository.save(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/update")
-    public String editUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userRepository.findById(id).get());
-        return "updateUser";
-    }
-
     @PostMapping("/{id}/update")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable Long id) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.refreshRoles();
+    public String updateUser(User userUp, @PathVariable Long id) {
+        User user = userRepository.findById(id).get();
+        userUp.setPassword(passwordEncoder.encode(userUp.getPassword()));
+        userUp.refreshRoles();
+        user.setName(userUp.getName());
+        user.setLastName(userUp.getLastName());
+        user.setPassword(userUp.getPassword());
+        user.setEmail(userUp.getEmail());
+        user.setRoles(userUp.getRoles());
+        user.setAge(userUp.getAge());
         userRepository.save(user);
         return "redirect:/admin";
     }
@@ -56,5 +56,11 @@ public class AdminController {
     public String deleteUser(@PathVariable Long id) {
         userRepository.delete(userRepository.findById(id).get());
         return "redirect:/admin";
+    }
+
+    @GetMapping("/{id}/get")
+    @ResponseBody
+    public User getUser(@PathVariable Long id) {
+        return userRepository.findById(id).get();
     }
 }

@@ -73,8 +73,8 @@ public class User implements UserDetails {
 
     public String listRoles() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (Role r : roles) {
-            stringBuffer.append(r.getAuthority()).append('\n');
+        for (GrantedAuthority r : getAuthorities()) {
+            stringBuffer.append(r.toString()).append(' ');
         }
         return stringBuffer.toString();
     }
