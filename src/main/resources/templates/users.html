@@ -83,32 +83,32 @@
                         <div class="card-header font-weight-bold">
                             Add new user
                         </div>
-                        <div class="card-body">
+                        <div class="card-body text-center">
                            <div class="row">
                                <div class="col-4"></div>
                                <div class="col-4">
                                    <form th:method="POST" th:action="@{/admin/save}" th:object="${userObj}">
-                                       <div class="form-group text-center font-weight-bold ">
+                                       <div class="form-group font-weight-bold ">
                                            <label for="name">First name</label>
-                                           <input type="text" th:field="*{name}" class="form-control bg-warning" id="name" placeholder="111">
+                                           <input type="text" th:field="*{name}" class="form-control bg-warning" id="name">
                                        </div>
-                                       <div class="form-group text-center font-weight-bold">
+                                       <div class="form-group font-weight-bold">
                                            <label for="lastName">Second name</label>
-                                           <input type="text" th:field="*{lastName}" class="form-control bg-warning" id="lastName" placeholder="111">
+                                           <input type="text" th:field="*{lastName}" class="form-control bg-warning" id="lastName">
                                        </div>
-                                       <div class="form-group text-center font-weight-bold">
+                                       <div class="form-group font-weight-bold">
                                            <label for="age">Age</label>
-                                           <input type="text" th:field="*{age}" class="form-control" id="age" placeholder="111">
+                                           <input type="text" th:field="*{age}" class="form-control" id="age">
                                        </div>
-                                       <div class="form-group text-center font-weight-bold">
+                                       <div class="form-group font-weight-bold">
                                            <label for="email">Email</label>
-                                           <input type="text" th:field="*{email}" class="form-control bg-warning" id="email" placeholder="111@mail.ru">
+                                           <input type="text" th:field="*{email}" class="form-control bg-warning" id="email">
                                        </div>
-                                       <div class="form-group text-center font-weight-bold">
+                                       <div class="form-group font-weight-bold">
                                            <label for="password">Password</label>
                                            <input type="password" th:field="*{password}" class="form-control" id="password">
                                        </div>
-                                       <div class="form-group text-center font-weight-bold">
+                                       <div class="form-group font-weight-bold">
                                            <p>Role</p>
                                            <select class="custom-select" th:field="*{rolesStrings}" size="2" multiple>
                                                <option value="ROLE_ADMIN">ADMIN</option>
@@ -134,13 +134,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete user</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form id="editForm" action="" th:method="post" th:object="${userObj}">
-                    <div class="modal-body">
+                    <div class="modal-body text-center font-weight-bold">
 
                         <div class="form-group">
                             <label for="editId" class="col-form-label">ID</label>
@@ -192,7 +192,7 @@
                     </button>
                 </div>
                 <form>
-                    <div class="modal-body">
+                    <div class="modal-body text-center font-weight-bold">
                         <div class="form-group">
                             <label for="deleteId" class="col-form-label">ID</label>
                             <input type="text" class="form-control" id="deleteId" value="id" disabled>
