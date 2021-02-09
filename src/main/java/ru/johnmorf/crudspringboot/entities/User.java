@@ -71,6 +71,8 @@ public class User implements UserDetails {
         }
     }
 
+
+
     public String listRoles() {
         StringBuffer stringBuffer = new StringBuffer();
         for (GrantedAuthority r : getAuthorities()) {
