@@ -15,7 +15,7 @@ public class AdminController {
 
     private final UserRepository userRepository;
 
-    public AdminController(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public AdminController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
