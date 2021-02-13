@@ -8,6 +8,7 @@ import ru.johnmorf.crudspringboot.entities.User;
 import ru.johnmorf.crudspringboot.repositories.RoleRepository;
 import ru.johnmorf.crudspringboot.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class UserService {
     }
 
     public User save(User user) {
-        user.refreshRoles();
+        refreshRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -41,7 +42,7 @@ public class UserService {
     public User update(Long idUserFromDb, User updateUser) {
         User userFromDb = userRepository.findById(idUserFromDb).get();
         Collection<Role> oldRoles = userFromDb.getRoles();
-        updateUser.refreshRoles();
+        refreshRoles(updateUser);
         updateUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         BeanUtils.copyProperties(updateUser, userFromDb, "id");
         oldRoles.forEach(roleRepository::delete);
@@ -53,4 +54,12 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    private void refreshRoles(User user) {
+        List<Role> newRoles = new ArrayList<>();
+        String[] rolesStrings = user.getRolesStrings();
+        for (int i = 0; i < rolesStrings.length; i++) {
+            newRoles.add(new Role(rolesStrings[i]));
+        }
+        user.setRoles(newRoles);
+    }
 }
