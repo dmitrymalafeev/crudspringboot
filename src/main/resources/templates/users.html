@@ -43,7 +43,7 @@
                 </div>
             </nav>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="users">
+                <div role="tabpanel" class="tab-pane active" id="users" aria-labelledby="users-tab">
                     <div class="card">
                         <div class="card-header font-weight-bold">
                             All users
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="new">
+                <div role="tabpanel" class="tab-pane" id="new" aria-labelledby="new-tab">
                     <div class="card">
                         <div class="card-header font-weight-bold">
                             Add new user
@@ -240,7 +240,7 @@
                     User added!
                 </div>
                 <div class="modal-footer text-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" data-toggle="tab" href="#users" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

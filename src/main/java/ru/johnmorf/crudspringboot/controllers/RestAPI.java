@@ -1,60 +1,43 @@
 package ru.johnmorf.crudspringboot.controllers;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.johnmorf.crudspringboot.entities.Role;
 import ru.johnmorf.crudspringboot.entities.User;
-import ru.johnmorf.crudspringboot.repositories.RoleRepository;
-import ru.johnmorf.crudspringboot.repositories.UserRepository;
+import ru.johnmorf.crudspringboot.services.UserService;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
 @RequestMapping("admin/api/users")
 public class RestAPI {
 
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public RestAPI(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public RestAPI(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public List<User> list() {
-        return userRepository.findAll();
+        return userService.getAll();
     }
 
     @GetMapping("{id}")
-    public User getOne(@PathVariable("id") User user) {
-        return user;
+    public User getOne(@PathVariable("id") Long id) {
+        return userService.getUser(id);
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
-        user.refreshRoles();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return userService.save(user);
     }
 
     @PutMapping("{id}")
-    public User update(@PathVariable("id") User userFromDb, @RequestBody User user) {
-        Collection<Role> oldRoles = userFromDb.getRoles();
-        user.refreshRoles();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        BeanUtils.copyProperties(user, userFromDb, "id");
-        oldRoles.forEach(roleRepository::delete);
-
-        return userRepository.save(userFromDb);
+    public User update(@PathVariable("id") Long idUserFromDb, @RequestBody User user) {
+        return userService.update(idUserFromDb, user);
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") User user) {
-        userRepository.delete(user);
+        userService.delete(user);
     }
 }
