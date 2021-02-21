@@ -85,7 +85,7 @@ function addUser() {
         }).then((r) => {
             if (r.ok) {
                 refreshData()
-                $('#successModal').modal()
+                // $('#successModal').modal()
             }
     })
 }
