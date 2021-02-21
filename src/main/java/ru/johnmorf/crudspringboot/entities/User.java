@@ -31,6 +31,9 @@ public class User implements UserDetails {
     private transient String[] rolesStrings;
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
     @Override
@@ -63,18 +66,10 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void refreshRoles() {
-        roles = new ArrayList<>();
-        for (int i = 0; i < rolesStrings.length; i++) {
-            roles.add(new Role(rolesStrings[i]));
-            System.out.println(rolesStrings[i]);
-        }
-    }
-
     public String listRoles() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (Role r : roles) {
-            stringBuffer.append(r.getAuthority()).append('\n');
+        for (GrantedAuthority r : getAuthorities()) {
+            stringBuffer.append(r.toString()).append(' ');
         }
         return stringBuffer.toString();
     }
