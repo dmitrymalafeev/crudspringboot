@@ -6,12 +6,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Entity
 @Data
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private transient String[] rolesStrings;
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
@@ -67,10 +67,10 @@ public class User implements UserDetails {
     }
 
     public String listRoles() {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         for (GrantedAuthority r : getAuthorities()) {
-            stringBuffer.append(r.toString()).append(' ');
+            stringBuilder.append(r.toString()).append(' ');
         }
-        return stringBuffer.toString();
+        return stringBuilder.toString();
     }
 }

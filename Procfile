@@ -1,0 +1,1 @@
+web: java -jar -Dspring.profiles.active=dev target/crudspringboot-0.0.1-SNAPSHOT.jar
